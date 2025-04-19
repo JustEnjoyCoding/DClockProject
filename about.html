@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Plan meetings across time zones with the best world time clock & converter. Sync schedules globally. Time zone converter & meeting planner included!">
+    <title>World Best Clock with Analog & Digital Display</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: #232570;
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: darkslateblue;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer {
+            background: darkslateblue;
+            margin-top: auto;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 4rem 0;
+        }
+
+        .text-muted {
+            color: white !important;
+        }
+    </style>
+
+    <style>
+        /* Added margin to header and adjusted main-content padding */
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        /* Adjusted main-content padding for mobile */
+        .main-content {
+            padding: 2rem 0;
+        }
+
+        @media (min-width: 768px) {
+            .main-content {
+                padding: 4rem 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand text-white" href="#">World Time Clock</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon text-white"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link text-white" href="/index.html">Home</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-white dropdown-toggle" href="#" data-bs-toggle="dropdown">Services</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/index.html">World Time Clock</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link text-white" href="/about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+
+     <!-- Modified main content container -->
+     <div class="container-fluid main-content flex-grow-1">  <!-- Added main-content class -->
+        <div class="row gx-3">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-10 col-lg-8">
+                        <!-- Content remains same -->
+                        <div class="p-4" style="background: rgba(255,255,255,0.1); border-radius: 15px;">
+                            <h2 class="mb-4 text-center">About World Time Clock</h2>
+                            <p class="lead text-center mb-5">
+                                Your premier solution for seamless global time coordination. Our platform offers 
+                                real-time tracking of multiple time zones with both analog and digital displays, 
+                                making international scheduling effortless.
+                            </p>
+    
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <i class="bi bi-globe fs-3 text-primary"></i>
+                                        <div>
+                                            <h4>Global Coverage</h4>
+                                            <p class="mb-0">Track time across all major cities worldwide with precision</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <i class="bi bi-clock fs-3 text-success"></i>
+                                        <div>
+                                            <h4>Dual Display</h4>
+                                            <p class="mb-0">Switch between classic analog and modern digital clocks</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <i class="bi bi-calendar-check fs-3 text-warning"></i>
+                                        <div>
+                                            <h4>Meeting Planner</h4>
+                                            <p class="mb-0">Coordinate international meetings with our time zone converter</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <i class="bi bi-bell fs-3 text-info"></i>
+                                        <div>
+                                            <h4>Custom Alerts</h4>
+                                            <p class="mb-0">Set reminders for important cross-timezone events</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <!-- <div class="text-center mt-5">
+                                <a href="#" class="btn btn-outline-light px-4">Explore Features</a>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Footer -->
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="row text-center text-md-start">
+                <div class="col-12 col-md-3 mb-4 mb-md-0 text-center">
+                    <!-- ... (keep footer content) ... -->
+                    <h5>World Time Clock</h5>
+                    <p class="text-muted">Track time across the globe with precision</p>
+                </div>
+                <div class="col-12 col-md-3 mb-4 mb-md-0" style="padding-left: 20px;">
+                    <!-- ... (keep footer content) ... -->
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/privacypolicy.html" class="text-white text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Terms of Service</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="col-12 col-md-3 mb-4 mb-md-0">
+                    <!-- ... (keep footer content) ... -->
+                    <h5>Services</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">World Time Clock</a></li>
+                        <li style="visibility: hidden;"><a href="#" class="text-white text-decoration-none">Terms of
+                                Service</a></li>
+                        <li style="visibility: hidden;"><a href="#"
+                                class="text-white text-decoration-none">Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="col-12 col-md-3 text-center">
+                    <!-- ... (keep footer content) ... -->
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled">
+                        <li>Email: birdflaping@gmail.com</li>
+                        <li style="visibility: hidden;">Phone: +1 (555) 123-4567</li>
+                        <li class="d-flex justify-content-center mt-3">
+                            <div class="text-center social-icons d-flex gap-3">
+                                <a href="#" class="text-white text-decoration-none">
+                                    <i class="bi bi-twitter fs-5"></i>
+                                </a>
+                                <a href="#" class="text-white text-decoration-none">
+                                    <i class="bi bi-facebook fs-5"></i>
+                                </a>
+                                <a href="#" class="text-white text-decoration-none">
+                                    <i class="bi bi-instagram fs-5"></i>
+                                </a>
+                                <!-- <a href="#" class="text-white text-decoration-none">
+                                    <i class="bi bi-linkedin fs-5"></i>
+                                </a>
+                                <a href="#" class="text-white text-decoration-none">
+                                    <i class="bi bi-github fs-5"></i>
+                                </a> -->
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="hr hr-blurry" />
+            <div class="text-center mt-4 text-muted">
+                © 2025 World Time Clock. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add mobile-specific media queries -->
+    <style>
+        @media (max-width: 768px) {
+            .main-time {
+                font-size: 2.5rem !important;
+            }
+            
+            .country-clock {
+                min-width: 140px !important;
+                padding: 1rem !important;
+            }
+            
+            .default-clocks {
+                margin-bottom: 1.5rem;
+            }
+            
+            .clock-card {
+                padding: 1.5rem !important;
+            }
+            
+            .analog-clock {
+                width: 80px !important;
+                height: 80px !important;
+            }
+            
+            .large-analog-clock {
+                width: 150px !important;
+                height: 150px !important;
+            }
+            
+            .digital-clock h2 {
+                font-size: 1.5rem;
+            }
+            
+            .table-custom {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+
+
+
+
+</body>
+</html>

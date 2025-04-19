@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Existing meta tags and title -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Plan meetings across time zones with the best world time clock & converter. Sync schedules globally. Time zone converter & meeting planner included!">
+    <title>World Best Clock with Analog & Digital Display</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <style>
+        /* Add new styles for digital time and clock numbers */
+        body {
+            background: #232570;
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: darkslateblue;
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000; /* Added this line */
+            position: relative; /* Added this line */
+        }
+
+        .footer {
+            background: darkslateblue;
+            backdrop-filter: blur(10px);
+            margin-top: auto;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .default-date {
+            color: #fff !important;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .default-clocks {
+            display: flex;
+            justify-content: space-between;
+            /* Changed from center to space-between */
+            gap: 1rem;
+            /* Reduced gap */
+            flex-wrap: nowrap;
+            /* Prevent wrapping */
+            margin-bottom: 3rem;
+            overflow-x: auto;
+            /* Allow horizontal scrolling on small screens */
+        }
+
+        .country-clock {
+            /* text-align: center;
+            padding: 1.5rem;
+            background: darkcyan;
+            border-radius: 10px;
+            min-width: 180px;
+            flex-shrink: 0;
+            margin: 0;
+            transition: all 0.3s ease;
+            cursor: pointer; */
+
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 10px solid;
+            min-width: 180px;
+            flex-shrink: 0;
+            margin: 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+
+
+        }
+
+        .country-clock:hover {
+            transform: scale(1.05);
+            background-color: #008b8b;
+            /* Darker cyan on hover */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .country-flag {
+            font-size: 2rem;
+            margin-top: 1rem;
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        /* Changed placeholder color */
+        #searchInput::placeholder {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        .clock-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 2rem !important;
+            max-width: 700px;
+            /* Added max-width */
+            margin: 0 auto;
+            /* Center the reduced width */
+        }
+
+        .suggestion-item {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .main-time {
+            font-size: 4rem;
+            letter-spacing: 3px;
+            font-weight: 300;
+            display: inline-flex;
+            /* Changed from default */
+            align-items: center;
+            margin-bottom: 0 !important;
+            /* Remove bottom margin */
+        }
+
+        .timezone-badge {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .suggestion-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .flag-emoji {
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+
+        .clock-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .digital-time {
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+            opacity: 0.9;
+        }
+
+        .analog-clock {
+            font-family: Arial, sans-serif;
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+       
+
+        .large-analog-clock {
+            width: 200px;
+            height: 200px;
+        }
+
+        .hand {
+            position: absolute;
+            left: 50%;
+            bottom: 50%;
+            transform-origin: bottom center;
+            border-radius: 2px;
+        }
+
+        .hour-hand {
+            width: 2px;
+            height: 25px;
+            background: #ffffff;
+        }
+
+        /* Keep other existing styles unchanged */
+        .minute-hand {
+            width: 1.5px;
+            height: 35px;
+            background: #ffffff;
+        }
+
+        .second-hand {
+            width: 1px;
+            height: 40px;
+            background: #ff4444;
+        }
+
+        .large .hour-hand {
+            height: 40px;
+        }
+
+        .large .minute-hand {
+            height: 60px;
+        }
+
+        .large .second-hand {
+            height: 70px;
+        }
+
+        .center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .digital-clock {
+            text-align: left;
+            padding: 20px;
+        }
+
+        .sidebar {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            height: calc(100vh - 20px);
+            padding: 1rem;
+            overflow-y: auto;
+            position: sticky;
+            top: 20px;
+            z-index: 999; /* Added this line */
+        }
+
+        .social-icons a {
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-3px);
+            color: #00ff9d !important;
+        }
+
+
+        .country-clock .digital-time {
+            font-size: 1.1rem;
+            margin: 0.75rem 0;
+        }
+
+        .country-clock .default-date {
+            font-size: 1rem !important;
+            margin-top: 0.5rem;
+        }
+
+        .country-clock .country-name {
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .bg-dark {
+
+            background-color: rgb(91 127 183) !important;
+        }
+
+
+
+        /* Optional: Add media query for better responsiveness */
+        @media (max-width: 1200px) {
+            .default-clocks {
+                gap: 0.5rem;
+            }
+
+            .country-clock {
+                min-width: 160px;
+                padding: 1rem;
+            }
+        }
+    </style>
+
+    <style>
+        /* Table Styles */
+        .table-custom {
+            background-color: #2a2f5b !important;
+            color: #fff !important;
+            border-radius: 8px;
+            overflow: hidden;
+            border-color: #4a4f8b !important;
+        }
+
+        .table-custom thead th {
+            background-color: #3a4070 !important;
+            color: #ffffff !important;
+            border-bottom: 2px solid #4a4f8b !important;
+
+        }
+
+        .table-custom tbody tr {
+            background-color: #3a4070 !important;
+            color: #ffffff !important;
+            transition: all 0.2s ease;
+            background-color: #3a4070;
+            ;
+        }
+
+        .table-custom tbody tr:hover {
+            background-color: #4a4f8b !important;
+        }
+
+        .table-custom td,
+        .table-custom th {
+            vertical-align: middle;
+            padding: 12px 15px;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .page-info {
+            color: #fff;
+            display: flex;
+            align-items: center;
+            margin: 0 15px;
+        }
+
+        .pagination-btn {
+            background-color: #3f447a;
+            border: none;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-btn:hover {
+            background-color: #4a4f8b;
+        }
+
+        .pagination-btn:disabled {
+            background-color: #2a2f5b;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .table-custom td {
+            color: #ffffff !important;
+            border-color: #4a4f8b !important;
+        }
+
+        .table-custom th {
+            color: #ffffff !important;
+            /* White header text */
+            background-color: #444a8a;
+        }
+
+        .text-muted {
+            color: white !important;
+        }
+
+
+        /* Remove Bootstrap default styling */
+        .table {
+            --bs-table-bg: transparent !important;
+            --bs-table-striped-bg: transparent !important;
+            --bs-table-hover-bg: transparent !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand text-white" href="#">World Time Clock</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon text-white"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link text-white" href="/index.html">Home</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-white dropdown-toggle" href="#" data-bs-toggle="dropdown">Services</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/index.html">World Time Clock</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link text-white" href="/about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid flex-grow-1">
+        <div class="row gx-3">
+            <!-- Left Sidebar (hidden on mobile) -->
+            <div class="col-lg-2 d-none d-lg-block sidebar">
+                <!-- ... (keep existing sidebar content) ... -->
+                <div class="ad-container">
+                    <!-- <div class="ad-placeholder">Google Ad 300x250</div> -->
+                </div>
+                <div class="ad-container">
+                    <!-- <div class="ad-placeholder">Google Ad 300x600</div> -->
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-8 col-12">
+                <div class="container py-3 py-lg-5">
+                    <!-- Default Clocks Section -->
+                    <div class="default-clocks row flex-nowrap pb-2">
+                        <!-- Country clocks with responsive columns -->
+                        <div class="col-8 col-sm-6 col-md-4 col-lg-auto">
+                            <div class="country-clock">
+                                <canvas id="clock-us" class="analog-clock" width="100" height="100"></canvas>
+                                <div class="digital-time" id="digital-us"></div>
+                                <div class="country-flag">🇺🇸</div>
+                                <div class="country-name">USA</div>
+                            </div>
+                        </div>
+                        <div class="col-8 col-sm-6 col-md-4 col-lg-auto">
+                            <div class="country-clock">
+                                <canvas id="clock-cn" class="analog-clock" width="100" height="100"></canvas>
+                                <div class="digital-time" id="digital-cn"></div>
+                                <div class="country-flag">🇨🇳</div>
+                                <div class="country-name">China</div>
+                            </div>
+                        </div>
+                        <div class="col-8 col-sm-6 col-md-4 col-lg-auto">
+                            <div class="country-clock">
+                                <canvas id="clock-gb" class="analog-clock" width="100" height="100"></canvas>
+                                <div class="digital-time" id="digital-gb"></div>
+                                <div class="country-flag">🇬🇧</div>
+                                <div class="country-name">UK</div>
+                            </div>
+                        </div>
+                        <div class="col-8 col-sm-6 col-md-4 col-lg-auto">
+                            <div class="country-clock">
+                                <canvas id="clock-in" class="analog-clock" width="100" height="100"></canvas>
+                                <div class="digital-time" id="digital-in"></div>
+                                <div class="country-flag">🇮🇳</div>
+                                <div class="country-name">India</div>
+                            </div>
+                        </div>
+                        <div class="col-8 col-sm-6 col-md-4 col-lg-auto">
+                            <div class="country-clock">
+                                <canvas id="clock-fr" class="analog-clock" width="100" height="100"></canvas>
+                                <div class="digital-time" id="digital-fr"></div>
+                                <div class="country-flag">🇫🇷</div>
+                                <div class="country-name">France</div>
+                            </div>
+                        </div>
+                       
+                        <!-- Repeat for other clocks with same column structure -->
+                    </div>
+
+                    <!-- Main Content -->
+                    <h1 class="display-4 mb-4 text-center">World Time Clock</h1>
+
+                     <!-- Clock Display -->
+                     <div class="clock-card p-3 p-lg-5" id="clockDisplay" style="display: none;">
+                        <!-- ... (keep existing clock display) ... -->
+                        <div class="clock-container">
+                            <div class="analog-clock-container">
+                                <canvas id="analogClock" class="analog-clock large-analog-clock" width="200"
+                                    height="200"></canvas>
+                            </div>
+                            <div class="digital-clock">
+                                <h2 class="mb-4 fw-light" id="location"></h2>
+                                <div class="main-time mb-3" id="time"></div>
+                                <div class="h5 text-muted" id="date"></div>
+                                <div class="h5" id="timezone"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="search-container">
+                        <div class="input-group input-group-lg shadow">
+                            <!-- ... (keep existing search input) ... -->
+                            <input type="text" class="form-control bg-dark text-white border-0" id="searchInput"
+                            placeholder="Search country, city or timezone..." autocomplete="off">
+                            <button class="btn btn-dark border-0" type="button">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                        <div class="list-group mt-2 bg-dark" id="suggestions"></div>
+                    </div>
+
+                    <!-- Table Section -->
+                    <div class="table-responsive mt-4">
+                        <!-- ... (keep existing table) ... -->
+                        <table class="table table-custom table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Country</th>
+                                    <th>City</th>
+                                    <th>Timezone</th>
+                                </tr>
+                            </thead>
+                            <tbody id="timezoneTableBody">
+                                <!-- Table rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                        <div id="paginationControls" class="pagination-container"></div>
+                    </div>
+
+                    <!-- Clock Display -->
+                    <!-- <div class="clock-card p-3 p-lg-5" id="clockDisplay" style="display: none;">
+                        
+                        <div class="clock-container">
+                            <div class="analog-clock-container">
+                                <canvas id="analogClock" class="analog-clock large-analog-clock" width="200"
+                                    height="200"></canvas>
+                            </div>
+                            <div class="digital-clock">
+                                <h2 class="mb-4 fw-light" id="location"></h2>
+                                <div class="main-time mb-3" id="time"></div>
+                                <div class="h5 text-muted" id="date"></div>
+                                <div class="h5" id="timezone"></div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+
+            <!-- Right Sidebar (hidden on mobile) -->
+            <div class="col-lg-2 d-none d-lg-block sidebar">
+                <!-- ... (keep existing sidebar content) ... -->
+                <div class="ad-container">
+                    <!-- <div class="ad-placeholder">Google Ad 300x250</div> -->
+                </div>
+                <div class="ad-container">
+                    <!-- <div class="ad-placeholder">Google Ad 300x600</div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row text-center text-md-start">
+                <div class="col-12 col-md-3 mb-4 mb-md-0 text-center">
+                    <!-- ... (keep footer content) ... -->
+                    <h5>World Clock</h5>
+                    <p class="text-muted">Track time across the globe with precision</p>
+                </div>
+                <div class="col-12 col-md-3 mb-4 mb-md-0" style="padding-left: 20px;">
+                    <!-- ... (keep footer content) ... -->
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/privacypolicy.html" class="text-white text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Terms of Service</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="col-12 col-md-3 mb-4 mb-md-0">
+                    <!-- ... (keep footer content) ... -->
+                    <h5>Services</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">World Time Clock</a></li>
+                        <li style="visibility: hidden;"><a href="#" class="text-white text-decoration-none">Terms of
+                                Service</a></li>
+                        <li style="visibility: hidden;"><a href="#"
+                                class="text-white text-decoration-none">Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="col-12 col-md-3 text-center">
+                    <!-- ... (keep footer content) ... -->
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled">
+                        <li>Email: birdflaping@gmail.com</li>
+                        <li style="visibility: hidden;">Phone: +1 (555) 123-4567</li>
+                        <li class="d-flex justify-content-center mt-3">
+                            <div class="text-center social-icons d-flex gap-3">
+                                <a href="#" class="text-white text-decoration-none">
+                                    <i class="bi bi-twitter fs-5"></i>
+                                </a>
+                                <a href="#" class="text-white text-decoration-none">
+                                    <i class="bi bi-facebook fs-5"></i>
+                                </a>
+                                <a href="#" class="text-white text-decoration-none">
+                                    <i class="bi bi-instagram fs-5"></i>
+                                </a>
+                                <!-- <a href="#" class="text-white text-decoration-none">
+                                    <i class="bi bi-linkedin fs-5"></i>
+                                </a>
+                                <a href="#" class="text-white text-decoration-none">
+                                    <i class="bi bi-github fs-5"></i>
+                                </a> -->
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="hr hr-blurry" />
+            <div class="text-center mt-4 text-muted">
+                © 2025 World Time Clock. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add mobile-specific media queries -->
+    <style>
+        @media (max-width: 768px) {
+            .main-time {
+                font-size: 2.5rem !important;
+            }
+            
+            .country-clock {
+                min-width: 140px !important;
+                padding: 1rem !important;
+            }
+            
+            .default-clocks {
+                margin-bottom: 1.5rem;
+            }
+            
+            .clock-card {
+                padding: 1.5rem !important;
+            }
+            
+            .analog-clock {
+                width: 80px !important;
+                height: 80px !important;
+            }
+            
+            .large-analog-clock {
+                width: 150px !important;
+                height: 150px !important;
+            }
+            
+            .digital-clock h2 {
+                font-size: 1.5rem;
+            }
+            
+            .table-custom {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+
+    <!-- Keep existing JavaScript unchanged -->
+    <script>
+        // Add this function to populate the table
+        // Add these variables at the top of the script
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let sortedTimeZones = [];
+        function populateTimezoneTable() {
+            const tbody = document.getElementById('timezoneTableBody');
+            tbody.innerHTML = '';
+
+            // Sort the time zones
+            sortedTimeZones = [...timeZoneCache].sort((a, b) => {
+                if (a.country !== b.country) return a.country.localeCompare(b.country);
+                if (a.city !== b.city) return a.city.localeCompare(b.city);
+                return a.zone.localeCompare(b.zone);
+            });
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedItems = sortedTimeZones.slice(startIndex, endIndex);
+
+            paginatedItems.forEach(info => {
+                const row = document.createElement('tr');
+                row.className = 'timezone-row';
+                row.setAttribute('data-search', info.searchText);
+                row.dataset.zone = info.zone;
+                row.innerHTML = `
+                <td>${info.flag} ${info.country}</td>
+                <td>${info.city}</td>
+                <td>${info.zone}</td>
+            `;
+                row.addEventListener('click', function () {
+                    const zone = this.dataset.zone;
+                    currentTimeZone = timeZoneCache.find(tz => tz.zone === zone);
+                    document.getElementById('clockDisplay').style.display = 'block';
+                    document.getElementById('searchInput').value = `${currentTimeZone.country}, ${currentTimeZone.city}`;
+                    document.getElementById('suggestions').style.display = 'none';
+                    updateClock();
+                });
+                tbody.appendChild(row);
+            });
+
+            updatePaginationControls();
+
+
+        }
+
+
+        // Add new pagination functions
+        function updatePaginationControls() {
+            const totalPages = Math.ceil(sortedTimeZones.length / itemsPerPage);
+            const controls = document.getElementById('paginationControls');
+            controls.innerHTML = `
+            <button class="pagination-btn" onclick="changePage(-1)" ${currentPage === 1 ? 'disabled' : ''}>
+                Previous
+            </button>
+            <div class="page-info">
+                Page ${currentPage} of ${totalPages}
+            </div>
+            <button class="pagination-btn" onclick="changePage(1)" ${currentPage === totalPages ? 'disabled' : ''}>
+                Next
+            </button>
+        `;
+        }
+
+        function changePage(offset) {
+            const totalPages = Math.ceil(sortedTimeZones.length / itemsPerPage);
+            currentPage = Math.max(1, Math.min(totalPages, currentPage + offset));
+            populateTimezoneTable();
+        }
+
+        // Add this line after timeZoneCache initialization
+        //populateTimezoneTable();
+    </script>
+
+    <script>
+        // Modified drawAnalogClockForZone function with numbers
+        const timeZones = Intl.supportedValuesOf('timeZone');
+        let currentTimeZone = null;
+        let searchTimeout = null;
+
+        const defaultCountries = {
+            'US': { id: 'clock-us', zone: 'America/New_York', flag: '🇺🇸' },
+            'CN': { id: 'clock-cn', zone: 'Asia/Shanghai', flag: '🇨🇳' },
+            'GB': { id: 'clock-gb', zone: 'Europe/London', flag: '🇬🇧' },
+            'IN': { id: 'clock-in', zone: 'Asia/Kolkata', flag: '🇮🇳' },
+            'FR': { id: 'clock-fr', zone: 'Europe/Paris', flag: '🇫🇷' }
+        };
+
+        const countryOverrides = {
+            'Europe/London': 'GB',
+            'Asia/Tokyo': 'JP',
+            'Asia/Kolkata': 'IN',
+            'America/New_York': 'US',
+            'Australia/Sydney': 'AU',
+            'Europe/Paris': 'FR',
+            'Europe/Berlin': 'DE',
+            'America/Toronto': 'CA',
+            'Asia/Dubai': 'AE',
+            'Asia/Shanghai': 'CN'
+        };
+
+        function getFlagEmoji(countryCode) {
+            if (!countryCode) return '🌐';
+            const codePoints = countryCode
+                .toUpperCase()
+                .split('')
+                .map(char => 127397 + char.charCodeAt());
+            return String.fromCodePoint(...codePoints);
+        }
+
+        function getCountryCode(timeZone) {
+            if (countryOverrides[timeZone]) return countryOverrides[timeZone];
+            try {
+                const region = timeZone.split('/')[0];
+                const formatter = new Intl.DisplayNames('en', { type: 'region' });
+                const countryName = formatter.of(region);
+                return countryName.slice(0, 2).toUpperCase();
+            } catch {
+                return null;
+            }
+        }
+
+        const timeZoneCache = timeZones.map(zone => {
+            const parts = zone.split('/');
+            const city = parts.pop()?.replace(/_/g, ' ') || zone;
+            const country = getCountryName(zone) || parts[0] || zone;
+            const countryCode = getCountryCode(zone);
+
+            return {
+                zone,
+                city,
+                country,
+                countryCode,
+                searchText: `${country.toLowerCase()} ${city.toLowerCase()} ${zone.toLowerCase()}`,
+                flag: getFlagEmoji(countryCode)
+            };
+        });
+
+        populateTimezoneTable();
+
+        function getCountryName(timeZone) {
+            try {
+                const formatter = new Intl.DateTimeFormat('en-US', {
+                    timeZone,
+                    timeZoneName: 'long'
+                });
+                const parts = formatter.formatToParts(new Date());
+                const tzName = parts.find(p => p.type === 'timeZoneName').value;
+                return tzName.replace(/( Standard Time| Daylight Time| Time)/, '');
+            } catch {
+                return timeZone.split('/')[0];
+            }
+        }
+
+        function getTimeData(timeZone) {
+            const formatter = new Intl.DateTimeFormat('en-US', {
+                timeZone,
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: false
+            });
+
+            const parts = formatter.formatToParts(new Date());
+            return {
+                hours: parseInt(parts.find(p => p.type === 'hour').value),
+                minutes: parseInt(parts.find(p => p.type === 'minute').value),
+                seconds: parseInt(parts.find(p => p.type === 'second').value),
+                milliseconds: new Date().getMilliseconds()
+            };
+        }
+
+
+        function drawAnalogClockForZone(canvasId, timeZone, size = 100) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            const timeData = getTimeData(timeZone);
+            const hours = timeData.hours % 12;
+            const minutes = timeData.minutes;
+            const seconds = timeData.seconds;
+            const milliseconds = timeData.milliseconds;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw clock face with numbers
+            ctx.beginPath();
+            ctx.arc(size / 2, size / 2, size / 2 - 2, 0, 2 * Math.PI);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw clock numbers
+            ctx.font = `${size / 12}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            // Calculate angles
+            const hourAngle = (hours * 30) + (minutes * 0.5) + (seconds * 0.5 / 60);
+            const minuteAngle = (minutes * 6) + (seconds * 0.1) + (milliseconds * 0.006 / 10);
+            const secondAngle = (seconds * 6) + (milliseconds * 0.006);
+
+            // Draw hands
+            drawHand(ctx, hourAngle, size * 0.25, size === 200 ? 6 : 3, '#fff', size);
+            drawHand(ctx, minuteAngle, size * 0.35, size === 200 ? 4 : 2, '#fff', size);
+            drawHand(ctx, secondAngle, size * 0.4, size === 200 ? 2 : 1, '#ff4444', size);
+
+            // Draw center
+            ctx.beginPath();
+            ctx.arc(size / 2, size / 2, 2, 0, 2 * Math.PI);
+            ctx.fillStyle = '#fff';
+            ctx.fill();
+            for (let i = 1; i <= 12; i++) {
+                const angle = (i * 30 - 90) * Math.PI / 180;
+                const x = size / 2 + Math.cos(angle) * (size / 2 - size / 6);
+                const y = size / 2 + Math.sin(angle) * (size / 2 - size / 6);
+                ctx.fillText(i.toString(), x, y);
+            }
+
+            // Keep existing hand drawing code unchanged
+        }
+
+        // Modified updateDefaultClocks function to update digital times
+        function drawHand(ctx, angle, length, width, color, size) {
+            angle = angle - 90;
+            const radians = (angle * Math.PI) / 180;
+            ctx.save();
+            ctx.translate(size / 2, size / 2);
+            ctx.rotate(radians);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(length, 0);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+            ctx.restore();
+        }
+        function updateDefaultClocks() {
+            Object.values(defaultCountries).forEach(country => {
+                drawAnalogClockForZone(country.id, country.zone, 100);
+
+                // Update digital time
+                const timeOptions = {
+                    timeZone: country.zone,
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                };
+
+                const dateOptions = {
+                    timeZone: country.zone,
+                    weekday: 'long',
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                };
+
+                const now = new Date();
+                const digitalTime = now.toLocaleTimeString('en-US', timeOptions);
+                const fullDate = now.toLocaleDateString('en-US', dateOptions);
+                document.getElementById(`digital-${country.id.split('-')[1]}`).innerHTML = `
+                    <div>${digitalTime}</div>
+                    <div class="default-date">${fullDate}</div>
+                `;
+            });
+        }
+
+        // Keep rest of the JavaScript unchanged
+        function updateClock() {
+            if (!currentTimeZone) return;
+
+            const options = {
+                timeZone: currentTimeZone.zone,
+                hour12: true,
+                hour: 'numeric',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+
+            const dateOptions = {
+                timeZone: currentTimeZone.zone,
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+
+            const now = new Date();
+
+            document.getElementById('time').textContent = now.toLocaleTimeString('en-US', options);
+            document.getElementById('date').textContent = now.toLocaleDateString('en-US', dateOptions);
+            document.getElementById('location').textContent = `${currentTimeZone.city}, ${currentTimeZone.country}`;
+            document.getElementById('timezone').textContent = currentTimeZone.zone;
+
+            drawAnalogClockForZone('analogClock', currentTimeZone.zone, 200);
+        }
+
+        function showSuggestions(searchText) {
+            const suggestions = document.getElementById('suggestions');
+            suggestions.innerHTML = '';
+
+            if (!searchText) {
+                suggestions.style.display = 'none';
+                document.querySelectorAll('.timezone-row').forEach(row => {
+                    row.style.display = '';
+                });
+                return;
+            }
+
+            const searchLower = searchText.toLowerCase();
+            const filtered = timeZoneCache.filter(info => info.searchText.includes(searchLower));
+            const results = filtered.slice(0, 15);
+
+            results.forEach(info => {
+                const div = document.createElement('a');
+                div.className = 'list-group-item list-group-item-action bg-dark text-white suggestion-item';
+                div.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="suggestion-text">
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <span class="flag-emoji">${info.flag}</span>
+                                <strong>${info.country}</strong>
+                                <small class="text-muted">${info.city}</small>
+                            </div>
+                            <div class="text-muted timezone-badge">${info.zone}</div>
+                        </div>
+                    </div>
+                `;
+                div.addEventListener('click', () => {
+                    currentTimeZone = info;
+                    document.getElementById('clockDisplay').style.display = 'block';
+                    document.getElementById('searchInput').value = `${info.country}, ${info.city}`;
+                    suggestions.style.display = 'none';
+                    updateClock();
+                });
+                suggestions.appendChild(div);
+            });
+
+            // Update table visibility
+            document.querySelectorAll('.timezone-row').forEach(row => {
+                const rowSearch = row.getAttribute('data-search');
+                row.style.display = rowSearch.includes(searchLower) ? '' : 'none';
+            });
+
+
+            suggestions.style.display = results.length ? 'block' : 'none';
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => showSuggestions(e.target.value.trim()), 200);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#suggestions') && !e.target.closest('#searchInput')) {
+                document.getElementById('suggestions').style.display = 'none';
+            }
+        });
+
+        function animate() {
+            updateClock();
+            updateDefaultClocks();
+            requestAnimationFrame(animate);
+        }
+
+        updateDefaultClocks();
+        animate();
+    </script>
+
+</body>
+
+</html>
